@@ -203,6 +203,80 @@
             font-size: 12px; letter-spacing: 1px; backdrop-filter: blur(8px); transition: all 0.2s;
         }
         #save-toolbar button:hover { background: #d4af37; color: #1a1200; }
+        #dev-btn {
+            position: absolute; top: 24px; right: 192px; z-index: 40;
+            width: 46px; height: 46px; border-radius: 50%;
+            background: rgba(15, 22, 38, 0.75); border: 1px solid rgba(212,175,55,0.5);
+            color: #fceea7; font-size: 20px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(8px); transition: all 0.3s;
+        }
+        #dev-btn:hover { box-shadow: 0 0 18px rgba(212,175,55,0.5); transform: scale(1.05); }
+        #dev-btn.active { background: rgba(212,175,55,0.85); color: #1a1200; }
+        #dev-panel {
+            position: absolute; top: 82px; left: 24px; z-index: 45;
+            width: 300px; max-height: 72vh; display: flex; flex-direction: column;
+            background: rgba(10, 16, 30, 0.92);
+            border: 1px solid rgba(212,175,55,0.4); border-radius: 14px;
+            color: #fceea7; backdrop-filter: blur(14px);
+            box-shadow: 0 12px 44px rgba(0,0,0,0.6);
+            transform: translateX(-340px); opacity: 0; pointer-events: none;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        #dev-panel.open { transform: translateX(0); opacity: 1; pointer-events: auto; }
+        .dev-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 14px; border-bottom: 1px solid rgba(212,175,55,0.25);
+            font-size: 14px; letter-spacing: 1px;
+        }
+        .dev-actions { display: flex; gap: 6px; align-items: center; }
+        .dev-actions button, .dev-sel-btns button {
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(212,175,55,0.4);
+            color: #fceea7; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 12px;
+        }
+        .dev-actions button:hover, .dev-sel-btns button:hover { background: #d4af37; color: #1a1200; }
+        .dev-actions #dev-close { font-size: 18px; padding: 0 8px; }
+        .dev-search { padding: 10px 14px 6px; }
+        .dev-search input {
+            width: 100%; padding: 7px 10px; border-radius: 8px; border: 1px solid rgba(212,175,55,0.3);
+            background: rgba(255,255,255,0.06); color: #fff; font-size: 13px; outline: none;
+        }
+        .dev-catalog { flex: 1; overflow-y: auto; padding: 4px 12px 12px; }
+        .dev-cat-title {
+            font-size: 11px; letter-spacing: 1px; color: rgba(252,238,167,0.6);
+            margin: 10px 0 4px; padding-bottom: 2px; border-bottom: 1px solid rgba(212,175,55,0.15);
+        }
+        .dev-cat-item {
+            display: block; width: 100%; text-align: left;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(212,175,55,0.2);
+            color: #e8e4d4; padding: 6px 9px; margin: 3px 0; border-radius: 7px;
+            cursor: pointer; font-size: 12px; transition: all 0.15s;
+        }
+        .dev-cat-item:hover { background: rgba(212,175,55,0.25); color: #fff; }
+        .dev-selected { padding: 10px 14px; border-top: 1px solid rgba(212,175,55,0.25); }
+        .dev-sel-title { font-size: 13px; margin-bottom: 6px; }
+        .dev-coord-grid { display: grid; grid-template-columns: auto 1fr auto 1fr; gap: 4px 6px; align-items: center; margin-bottom: 8px; }
+        .dev-coord-grid .dev-lbl { font-size: 11px; color: rgba(252,238,167,0.7); }
+        .dev-coord-grid input {
+            width: 100%; min-width: 0; padding: 4px 6px; border-radius: 6px;
+            border: 1px solid rgba(212,175,55,0.3); background: rgba(255,255,255,0.06);
+            color: #fff; font-size: 12px; font-family: monospace; outline: none;
+        }
+        .dev-sel-btns { display: flex; gap: 6px; align-items: center; font-size: 12px; }
+        #dev-hint {
+            position: absolute; top: 82px; left: 50%; transform: translateX(-50%);
+            z-index: 25; pointer-events: none; font-size: 12px; letter-spacing: 1px;
+            background: rgba(212,175,55,0.9); color: #1a1200; padding: 8px 16px; border-radius: 20px;
+            opacity: 0; transition: opacity 0.25s;
+        }
+        #dev-hint.show { opacity: 1; }
+        #dev-align-hint {
+            position: absolute; top: 60%; left: 50%; transform: translateX(-50%);
+            z-index: 30; pointer-events: none; font-size: 13px; letter-spacing: 1px;
+            background: rgba(40, 160, 80, 0.92); color: #fff; padding: 6px 14px; border-radius: 16px;
+            opacity: 0; transition: opacity 0.2s;
+        }
+        #dev-align-hint.show { opacity: 1; }
         #crosshair {
             position: absolute; top: 50%; left: 50%; width: 8px; height: 8px;
             margin: -4px 0 0 -4px; border-radius: 50%; background: #fff;
@@ -279,6 +353,7 @@
     <input type="file" id="frame-photo-input" accept="image/*" style="display:none">
 
     <button id="move-btn" title="移动模式 (M)">✋</button>
+    <button id="dev-btn" title="开发者模式 (B)">🏗️</button>
     <button id="fps-btn" title="第一人称模式 (F)">🎮</button>
     <button id="light-toggle" title="灯光控制 (L)">💡</button>
 
@@ -288,6 +363,40 @@
     </div>
 
     <div id="move-hint">✋ 移动模式：拖动物体 · 滚轮升降 · Q/E 旋转 · 位置自动保存 · 按 M 退出</div>
+
+    <!-- 开发者模式 -->
+    <div id="dev-panel">
+        <div class="dev-header">
+            <span>🏗️ 开发者模式</span>
+            <div class="dev-actions">
+                <button id="dev-export" title="导出场景参数(JSON)">导出</button>
+                <button id="dev-import" title="导入场景参数(JSON)">导入</button>
+                <button id="dev-close">×</button>
+            </div>
+        </div>
+        <input type="file" id="dev-import-file" accept=".json,application/json" style="display:none">
+        <div class="dev-search">
+            <input type="text" id="dev-search" placeholder="搜索物品...">
+        </div>
+        <div id="dev-catalog" class="dev-catalog"></div>
+        <div id="dev-selected" class="dev-selected">
+            <div class="dev-sel-title" id="dev-sel-name">未选中</div>
+            <div class="dev-coord-grid">
+                <span class="dev-lbl">X</span><input type="number" id="dev-inp-x" step="0.1">
+                <span class="dev-lbl">Y</span><input type="number" id="dev-inp-y" step="0.1">
+                <span class="dev-lbl">Z</span><input type="number" id="dev-inp-z" step="0.1">
+                <span class="dev-lbl">旋转°</span><input type="number" id="dev-inp-ry" step="5">
+                <span class="dev-lbl">缩放</span><input type="number" id="dev-inp-scale" step="0.05" min="0.1">
+            </div>
+            <div class="dev-sel-btns">
+                <button id="dev-delete">🗑 删除</button>
+                <button id="dev-scale-down">−</button>
+                <button id="dev-scale-up">+</button>
+            </div>
+        </div>
+    </div>
+    <div id="dev-hint">🏗️ 开发者模式：点击物品栏放置 · 点击场景选中 · 方向键/输入坐标微调 · Q/E 旋转 · Del 删除</div>
+    <div id="dev-align-hint">✓ 已对齐地面，点击放置</div>
 
     <div id="crosshair"></div>
     <div id="fps-target"></div>
@@ -349,6 +458,12 @@
         let fpsHands = null;
         let walkPhase = 0;
         let walkAmount = 0;
+        let playerFeetY = 0;           // 当前脚下高度（0 / 楼梯斜坡 / 16 二层）
+
+        // ---------- Second floor / stairs ----------
+        const FLOOR2_Y = 16;
+        const STAIRS = { minX: 17, maxX: 21, zTop: 2, zBottom: 10, steps: 12, rise: FLOOR2_Y / 12 };
+        let staticColliders = [];      // 墙体/栏杆等静态碰撞盒
 
         // ---------- Move mode state ----------
         let moveModeActive = false;
@@ -356,7 +471,7 @@
         let moveHover = null;         // group under cursor (move mode)
         let moveRing = null;          // highlight ring mesh
         let moveDrag = { active: false, plane: new THREE.Plane(), offset: new THREE.Vector3() };
-        const SOLID_IDS = ['tree', 'fireplace', 'wardrobe', 'bookshelf', 'tv', 'sofa', 'radio', 'reindeer', 'santa', 'bookcase', 'bartable', 'vending', 'piano', 'pine-tree', 'santa-glb', 'gifts'];
+        const SOLID_IDS = ['tree', 'fireplace', 'wardrobe', 'bookshelf', 'tv', 'sofa', 'radio', 'reindeer', 'santa', 'bookcase', 'bartable', 'vending', 'piano', 'pine-tree', 'santa-glb', 'gifts', 'bed', 'nightstand', 'wardrobe2', 'bathtub', 'toilet', 'sink', 'bathcabinet', 'desk', 'officechair', 'speakers', 'sofa2', 'tv2', 'bookcase2'];
         let activeColliders = [];
 
         const infoPanel = document.getElementById('info-panel');
@@ -667,12 +782,6 @@
             floor.receiveShadow = true;
             room.add(floor);
 
-            // Ceiling
-            const ceiling = new THREE.Mesh(new THREE.PlaneGeometry(44, 28), standard(0x2a2230));
-            ceiling.rotation.x = Math.PI / 2;
-            ceiling.position.y = 16;
-            room.add(ceiling);
-
             const wallMat = new THREE.MeshStandardMaterial({ map: textures.wall, roughness: 0.95 });
             const makeWall = (w, h, pos, ry) => {
                 const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), wallMat);
@@ -840,7 +949,7 @@
 
         function buildCeilingLamp(room) {
             const group = new THREE.Group();
-            group.position.set(0, 16, 0);
+            group.position.set(0, 15.5, 0);
 
             const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 1.4, 8), glossy(0xd4af37));
             rod.position.y = -0.7; group.add(rod);
@@ -889,6 +998,119 @@
                 treeLights.push(m);
             }
             room.add(garland);
+        }
+
+        // ---------- Second floor ----------
+        function buildStairs(parent) {
+            const stepMat = standard(0x8a5a2b);
+            const rise = STAIRS.rise;
+            const run = (STAIRS.zBottom - STAIRS.zTop) / STAIRS.steps;
+            const w = STAIRS.maxX - STAIRS.minX;
+            const cx = (STAIRS.minX + STAIRS.maxX) / 2;
+            for (let i = 0; i < STAIRS.steps; i++) {
+                const zFront = STAIRS.zBottom - i * run;
+                const topY = (i + 1) * rise;
+                const step = new THREE.Mesh(new THREE.BoxGeometry(w, topY, run), stepMat);
+                step.position.set(cx, topY / 2, zFront - run / 2);
+                step.castShadow = true; step.receiveShadow = true;
+                parent.add(step);
+            }
+            // 扶手（两侧斜杆）
+            const railMat = standard(0x5a3d28);
+            const railLen = STAIRS.zBottom - STAIRS.zTop;
+            for (const sx of [STAIRS.minX + 0.12, STAIRS.maxX - 0.12]) {
+                const rail = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.12, railLen + 1), railMat);
+                rail.position.set(sx, 1.0, (STAIRS.zTop + STAIRS.zBottom) / 2);
+                rail.rotation.x = Math.atan2(FLOOR2_Y, railLen);
+                parent.add(rail);
+            }
+        }
+
+        function buildSecondFloor() {
+            const floor2 = new THREE.Group();
+
+            const slabMat = new THREE.MeshStandardMaterial({ map: textures.floor, roughness: 0.9 });
+            const slabH = 0.5;
+
+            // 楼板（顶面 y=16）：房间区 + 走廊左，右前侧为楼梯口 x 17..22, z 2..14
+            const addSlab = (cx, cz, w, d) => {
+                const s = new THREE.Mesh(new THREE.BoxGeometry(w, slabH, d), slabMat);
+                s.position.set(cx, FLOOR2_Y - slabH / 2, cz);
+                s.receiveShadow = true;
+                floor2.add(s);
+            };
+            addSlab(0, -6, 44, 16);      // 房间区 x -22..22, z -14..2
+            addSlab(-2.5, 8, 39, 12);    // 走廊左 x -22..17, z 2..14
+
+            const wallMat = new THREE.MeshStandardMaterial({ map: textures.wall, roughness: 0.95 });
+            const wallH = 14, wallY = FLOOR2_Y + wallH / 2;
+
+            // 建墙（轴对齐），并登记碰撞盒
+            const addWallBox = (w, d, cx, cz, ry, y1, y2) => {
+                const m = new THREE.Mesh(new THREE.BoxGeometry(w, wallH, d), wallMat);
+                m.position.set(cx, wallY, cz);
+                m.rotation.y = ry;
+                floor2.add(m);
+                if (Math.abs(ry) < 0.1) {
+                    staticColliders.push({ minX: cx - w / 2, maxX: cx + w / 2, minY: y1, maxY: y2, minZ: cz - d / 2, maxZ: cz + d / 2 });
+                } else {
+                    staticColliders.push({ minX: cx - d / 2, maxX: cx + d / 2, minY: y1, maxY: y2, minZ: cz - w / 2, maxZ: cz + w / 2 });
+                }
+            };
+
+            // 外墙
+            addWallBox(44, 0.3, 0, -14, 0, 16.1, 30);            // 后墙
+            addWallBox(28, 0.3, -22, 0, Math.PI / 2, 16.1, 30);  // 左墙
+            addWallBox(28, 0.3, 22, 0, Math.PI / 2, 16.1, 30);   // 右墙
+            // 隔墙（房间之间，z -14..2）
+            addWallBox(0.3, 16, -6, -6, 0, 16.1, 30);           // 卧室|卫生间 (x=-6)
+            addWallBox(0.3, 16, 10, -6, 0, 16.1, 30);           // 卫生间|电脑房 (x=10)
+            // 走廊-房间墙 z=2，留 3 个门洞：卧室 -16..-13 / 卫生间 0..3 / 电脑房 17..20（正对楼梯顶，加宽）
+            addWallBox(6, 0.3, -19, 2, 0, 16.1, 30);             // x -22..-16
+            addWallBox(13, 0.3, -6.5, 2, 0, 16.1, 30);           // x -13..0
+            addWallBox(14, 0.3, 10, 2, 0, 16.1, 30);             // x 3..17
+            addWallBox(2, 0.3, 21, 2, 0, 16.1, 30);              // x 20..22
+
+            // 门（门扇，略开）
+            const doorMat = standard(0x8a5a2b);
+            const addDoor = (cx, cz, ry) => {
+                const d = new THREE.Mesh(new THREE.BoxGeometry(2.6, 2.4, 0.15), doorMat);
+                d.position.set(cx, FLOOR2_Y + 1.2, cz);
+                d.rotation.y = ry;
+                floor2.add(d);
+            };
+            addDoor(-14.5, 2.1, 0.35);
+            addDoor(1.5, 2.1, 0.35);
+            addDoor(18.5, 2.1, 0.35);
+
+            // 楼梯
+            buildStairs(floor2);
+
+            // 楼梯口左栏杆（防侧入 / 防二楼坠入），位于楼梯左缘 x≈16.9，不阻挡楼梯与门洞
+            const railMat = standard(0x5a3d28);
+            const rail = new THREE.Mesh(new THREE.BoxGeometry(0.12, 1.0, 12), railMat);
+            rail.position.set(16.9, 16.5, 8);
+            floor2.add(rail);
+
+            // 二层灯光
+            const l2a = new THREE.PointLight(0xffe0b0, 2.5, 40, 2);
+            l2a.position.set(0, 28, 8); floor2.add(l2a);
+            const l2b = new THREE.PointLight(0xffd9c0, 2.0, 30, 2);
+            l2b.position.set(-14, 26, -6); floor2.add(l2b);
+            const l2c = new THREE.PointLight(0xffd9c0, 2.0, 30, 2);
+            l2c.position.set(14, 26, -6); floor2.add(l2c);
+
+            // 静态碰撞盒：1F 墙
+            const pushBox = (minX, maxX, minY, maxY, minZ, maxZ) =>
+                staticColliders.push({ minX, maxX, minY, maxY, minZ, maxZ });
+            pushBox(-22, 22, 0, 15.9, -13.5, -13.1);
+            pushBox(-21.6, -21.2, 0, 15.9, -14, 14);
+            pushBox(21.2, 21.6, 0, 15.9, -14, 14);
+            // 楼梯左栏杆：一楼侧入护栏（z 2..10）+ 二楼防坠护栏（z 2..14）
+            pushBox(16.85, 17.0, 0, 15.9, 2, 10);
+            pushBox(16.85, 17.0, 16.1, 18, 2, 14);
+
+            return floor2;
         }
 
         // ---------- Christmas Tree ----------
@@ -1576,7 +1798,7 @@
         // ---------- Sofa ----------
         function buildSofa() {
             const group = new THREE.Group();
-            group.position.set(18, 0, 7);
+            group.position.set(12, 0, 11);
             group.rotation.y = -Math.PI / 2;
 
             const fabric = standard(0xb5333a);
@@ -1764,9 +1986,9 @@
             const pos = new Float32Array(count * 3);
             const vel = new Float32Array(count);
             for (let i = 0; i < count; i++) {
-                pos[i * 3] = THREE.MathUtils.randFloatSpread(40);
-                pos[i * 3 + 1] = Math.random() * 16;
-                pos[i * 3 + 2] = THREE.MathUtils.randFloatSpread(24);
+                pos[i * 3] = THREE.MathUtils.randFloatSpread(42);
+                pos[i * 3 + 1] = Math.random() * 30;
+                pos[i * 3 + 2] = THREE.MathUtils.randFloatSpread(26);
                 vel[i] = Math.random() * 0.4 + 0.1;
             }
             geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
@@ -1792,7 +2014,7 @@
             for (let i = 0; i < pos.length / 3; i++) {
                 pos[i * 3 + 1] -= vel[i] * dt;
                 pos[i * 3] += Math.sin(t * 2 + i) * dt * 0.3;
-                if (pos[i * 3 + 1] < 0) { pos[i * 3 + 1] = 16; }
+                if (pos[i * 3 + 1] < 0) { pos[i * 3 + 1] = 30; }
             }
             sparkles.geometry.attributes.position.needsUpdate = true;
         }
@@ -1949,7 +2171,7 @@
                 const size = box.getSize(new THREE.Vector3());
                 const r = Math.max(size.x, size.z) / 2 + 0.25;
                 moveRing.visible = true;
-                moveRing.position.set(target.position.x, 0.1, target.position.z);
+                moveRing.position.set(target.position.x, box.min.y + 0.08, target.position.z);
                 moveRing.scale.setScalar(Math.max(0.6, r));
             } else if (moveRing) {
                 moveRing.visible = false;
@@ -1992,9 +2214,14 @@
         }
         function onPointerDown(e) {
             pointerDown.set(e.clientX, e.clientY);
+            if (devModeActive) return;
             if (moveModeActive) startMoveDrag(e);
         }
         function onPointerMove(e) {
+            if (devModeActive) {
+                if (devGhost) { updateDevGhost(e); return; }
+                return;
+            }
             if (moveModeActive) {
                 if (moveDrag.active) { moveDragUpdate(e); return; }
                 setPointerFromEvent(e);
@@ -2006,6 +2233,11 @@
             handleHover(e);
         }
         function onPointerUp(e) {
+            if (devModeActive) {
+                if (devGhost) { placeDevGhost(); return; }
+                devPick(e);
+                return;
+            }
             if (moveModeActive) { endMoveDrag(); return; }
             handleClick(e);
         }
@@ -2014,7 +2246,7 @@
             e.preventDefault();
             const target = moveSelected || moveHover;
             if (target) {
-                target.position.y = clamp(target.position.y + (e.deltaY > 0 ? -0.3 : 0.3), 0, 14);
+                target.position.y = clamp(target.position.y + (e.deltaY > 0 ? -0.3 : 0.3), 0, 28);
                 refreshColliders();
                 savePositions();
             }
@@ -2026,6 +2258,7 @@
             const container = document.getElementById('canvas-container');
             if (on) {
                 if (currentMode === MODE.FPS) exitFPS();
+                if (devModeActive) setDevMode(false);
                 controls.enabled = false;
                 btn.classList.add('active');
                 hint.classList.add('show');
@@ -2049,6 +2282,7 @@
             { id: 'bartable', name: '吧台桌 · Bar Table', file: 'versions/assets/Bar Table by Nick Slough - 5sbtN1v3sac.glb', pos: [8, 0, -2], height: 3.0, desc: '吧台桌🍹' },
             { id: 'vending', name: '自动售货机 · Vending Machine', file: 'versions/assets/Vending Machine.glb', pos: [-21, 0, 8], height: 5.0, rotationY: Math.PI / 2, desc: '自动售货机，投币买饮料。🥤' },
             { id: 'piano', name: '钢琴 · Piano', file: 'versions/assets/Piano by Bruno Oliveira - 5vbJ5vildOq.glb', pos: [-21, 0, -4], height: 3.5, rotationY: Math.PI / 2, desc: '一架优雅的钢琴。🎹' },
+            { id: 'clock', name: '时钟 · Clock', file: 'versions/assets/Office Pack-glb/Analog clock.glb', pos: [4, 11.3, -13.7], height: 1.2, desc: '墙上时钟，点击报时。🕰️', activate: playChime },
             { id: 'pine-tree', name: '小松树 · Pine Tree', file: 'versions/assets/ChristmasKit/Pine Tree.glb', pos: [-3, 0, -11.5], height: 2.5, desc: '一盆小松树。🌲' },
             { id: 'gifts', name: '礼物堆 · Gifts', file: 'versions/assets/ChristmasKit/Gifts.glb', pos: [-10, 0, 1], height: 1.0, desc: '成堆的圣诞礼物。🎁' },
             { id: 'santa-glb', name: '圣诞老人 · Santa', file: 'versions/assets/ChristmasKit/Santa.glb', pos: [0, 0, 10], height: 3.0, desc: '圣诞老人模型。🎅' },
@@ -2060,6 +2294,42 @@
             { id: 'decorations', name: '装饰串 · Decorations', file: 'versions/assets/ChristmasKit/Decorations.glb', pos: [-11, 0, 3], height: 0.7, desc: '一串装饰。🔵' },
             { id: 'socks-glb', name: '圣诞袜 · Socks', file: 'versions/assets/ChristmasKit/Socks.glb', pos: [6.5, 7.6, -11.7], height: 0.6, desc: '圣诞袜。🧦' },
             { id: 'stars', name: '星星 · Stars', file: 'versions/assets/ChristmasKit/Stars.glb', pos: [-16.5, 0, -3], height: 0.5, desc: '闪闪的星星。⭐' },
+
+            // ===== 二楼：卧室（x -22..-6, z -14..-4）=====
+            { id: 'bed', name: '双人床 · Bed', file: 'versions/assets/Furniture Kit-glb/Bed Double.glb', pos: [-18, 16, -12], height: 1.6, desc: '温馨的双人床。🛏️' },
+            { id: 'nightstand', name: '床头柜 · Night Stand', file: 'versions/assets/Ultimate House Interior Pack-glb/Night Stand.glb', pos: [-12, 16, -12], height: 1.2, desc: '床头柜。' },
+            { id: 'bedlamp', name: '床头灯 · Table Lamp', file: 'versions/assets/Ultimate House Interior Pack-glb/Table Lamp.glb', pos: [-12, 17.1, -12], height: 0.9, desc: '柔和的床头灯。🛋️' },
+            { id: 'wardrobe2', name: '大衣柜 · Wardrobe', file: 'versions/assets/Ultimate Interior Props Pack-glb/Large Wardrobe.glb', pos: [-21, 16, -6], height: 5.0, desc: '卧室衣柜。' },
+            { id: 'floorlamp', name: '落地灯 · Floor Lamp', file: 'versions/assets/Furniture Kit-glb/Lamp Round Floor.glb', pos: [-20, 16, -10], height: 3.5, desc: '落地灯。💡' },
+            { id: 'bedrug', name: '地毯 · Rug', file: 'versions/assets/Ultimate House Interior Pack-glb/Round Rug.glb', pos: [-14, 16, -8], height: 0.1, desc: '床边地毯。' },
+            { id: 'bedplant', name: '盆栽 · Potted Plant', file: 'versions/assets/Furniture Kit-glb/Potted Plant.glb', pos: [-7, 16, -13], height: 1.4, desc: '卧室绿植。🌿' },
+            { id: 'bedpainting', name: '装饰画 · Painting', file: 'versions/assets/Ultimate Interior Props Pack-glb/Painting Canvas.glb', pos: [-18, 17.5, -13.6], height: 1.6, desc: '墙上的装饰画。🖼️' },
+
+            // ===== 二楼：卫生间（x -6..10, z -14..-4）=====
+            { id: 'bathtub', name: '浴缸 · Bathtub', file: 'versions/assets/Furniture Kit-glb/Bathtub.glb', pos: [2, 16, -13], height: 1.5, desc: '浴缸。🛁' },
+            { id: 'toilet', name: '马桶 · Toilet', file: 'versions/assets/Furniture Kit-glb/Toilet.glb', pos: [-4, 16, -6], height: 1.4, desc: '马桶。' },
+            { id: 'sink', name: '洗手台 · Sink', file: 'versions/assets/Furniture Kit-glb/Bathroom Sink.glb', pos: [8, 16, -6], height: 2.2, desc: '洗手台。🚰' },
+            { id: 'bathmirror', name: '镜子 · Mirror', file: 'versions/assets/Bubbly Bathroom Set.undefined-glb/Mirror.glb', pos: [8, 17.5, -5.6], height: 1.6, desc: '浴室镜子。🪞' },
+            { id: 'bathcabinet', name: '浴室柜 · Cabinet', file: 'versions/assets/Bubbly Bathroom Set.undefined-glb/Cabinet Bathroom.glb', pos: [2, 16, -6], height: 2.6, desc: '浴室柜。' },
+            { id: 'towels', name: '毛巾 · Towels', file: 'versions/assets/Bubbly Bathroom Set.undefined-glb/Towel Stacked.glb', pos: [9, 16, -8], height: 0.9, desc: '叠好的毛巾。🧺' },
+            { id: 'bathmat', name: '地垫 · Mat', file: 'versions/assets/Bubbly Bathroom Set.undefined-glb/Mat.glb', pos: [0, 16, -8], height: 0.08, desc: '浴室地垫。' },
+            { id: 'bathplant', name: '绿植 · Plant', file: 'versions/assets/Bubbly Bathroom Set.undefined-glb/Plant.glb', pos: [-5, 16, -13], height: 1.2, desc: '浴室绿植。🌿' },
+            { id: 'toiletpaper', name: '卷纸 · Toilet Paper', file: 'versions/assets/Office Pack-glb/Bathroom Toilet Paper.glb', pos: [8.5, 16, -7], height: 0.5, desc: '卷纸。🧻' },
+
+            // ===== 二楼：电脑/娱乐房（x 10..22, z -14..2）=====
+            { id: 'desk', name: '书桌 · Desk', file: 'versions/assets/Office Pack-glb/Desk.glb', pos: [14, 16, -4], height: 1.8, desc: '电脑桌。🖥️' },
+            { id: 'officechair', name: '办公椅 · Office Chair', file: 'versions/assets/Office Pack-glb/Office Chair.glb', pos: [14, 16, -1.2], height: 2.4, desc: '办公椅。💺' },
+            { id: 'screen', name: '显示器 · Monitor', file: 'versions/assets/Office Pack-glb/Computer Screen.glb', pos: [14, 17.4, -4], height: 1.1, desc: '显示器。🖥️' },
+            { id: 'keyboard', name: '键盘 · Keyboard', file: 'versions/assets/Office Pack-glb/Keyboard.glb', pos: [14, 17.45, -3.2], height: 0.15, desc: '键盘。⌨️' },
+            { id: 'mouse', name: '鼠标 · Mouse', file: 'versions/assets/Office Pack-glb/Mouse.glb', pos: [15, 17.45, -3.2], height: 0.1, desc: '鼠标。🖱️' },
+            { id: 'speakers', name: '音响 · Speakers', file: 'versions/assets/Ultimate Interior Props Pack-glb/Bass Speakers.glb', pos: [10.5, 16, -3], height: 1.4, desc: '音响。🔊' },
+            { id: 'dartboard', name: '飞镖盘 · Dartboard', file: 'versions/assets/Office Pack-glb/Dartboard.glb', pos: [10.3, 18, -7], height: 1.4, rotationY: Math.PI / 2, desc: '飞镖盘。🎯' },
+            { id: 'sofa2', name: '沙发 · Sofa', file: 'versions/assets/Furniture Kit-glb/Lounge Sofa.glb', pos: [16, 16, -5], height: 2.4, desc: '娱乐区沙发。🛋️' },
+            { id: 'tv2', name: '电视 · Television', file: 'versions/assets/Furniture Kit-glb/Television.glb', pos: [19, 16, -8], height: 2.0, desc: '电视。📺' },
+            { id: 'bookcase2', name: '书柜 · Bookcase', file: 'versions/assets/Furniture Kit-glb/Bookcase Open.glb', pos: [12, 16, -13], height: 4.0, desc: '电脑房书柜。📚' },
+            { id: 'gamersrug', name: '地毯 · Rug', file: 'versions/assets/Office Pack-glb/Rug.glb', pos: [15, 16, -7], height: 0.1, desc: '娱乐区地毯。' },
+            { id: 'houseplant2', name: '盆栽 · Houseplant', file: 'versions/assets/Office Pack-glb/Houseplant.glb', pos: [-15, 16, 6], height: 1.5, desc: '走廊绿植。🌿' },
+            { id: 'ceillight2', name: '吊灯 · Ceiling Light', file: 'versions/assets/Ultimate House Interior Pack-glb/Light Ceiling Single.glb', pos: [0, 29.5, 8], height: 1.0, desc: '二层吊灯。💡' },
         ];
         function placeGLBModel(gltf, cfg) {
             const model = gltf.scene;
@@ -2078,7 +2348,8 @@
             holder.rotation.y = cfg.rotationY || 0;
             scene.add(holder);
             registerInteractable(holder, {
-                id: cfg.id, name: cfg.name, desc: cfg.desc, activate: () => {}
+                id: cfg.id, name: cfg.name, desc: cfg.desc, activate: cfg.activate || (() => {}),
+                file: cfg.file, height: cfg.height, scale: cfg.scale
             });
             applySavedTo(cfg.id, holder);
             refreshColliders();
@@ -2091,6 +2362,437 @@
                 }, undefined, () => {
                     console.warn('GLB 加载失败：', cfg.file);
                 });
+            });
+        }
+
+        // ---------- Developer mode ----------
+        const DEV_CATALOG = [
+            { cat: '客厅 / 卧室', items: [
+                ['Furniture Kit-glb/Bed Double.glb', 1.6], ['Furniture Kit-glb/Bed Single.glb', 1.4], ['Ultimate House Interior Pack-glb/Bed King.glb', 1.7],
+                ['Ultimate House Interior Pack-glb/Night Stand.glb', 1.2], ['Ultimate Interior Props Pack-glb/Large Wardrobe.glb', 5.0], ['Ultimate Interior Props Pack-glb/Medium Wardrobe.glb', 4.0],
+                ['Furniture Kit-glb/Lounge Sofa.glb', 2.4], ['Furniture Kit-glb/Lounge Sofa Long.glb', 2.4], ['Ultimate Interior Props Pack-glb/Three Seater Couch.glb', 2.4],
+                ['Ultimate Interior Props Pack-glb/Two Seater Couch.glb', 2.4], ['Furniture Kit-glb/Table Coffee.glb', 1.0], ['Ultimate House Interior Pack-glb/Table Round Small.glb', 1.2],
+                ['Ultimate House Interior Pack-glb/Table Round Large.glb', 1.6], ['Furniture Kit-glb/Table.glb', 1.6], ['Furniture Kit-glb/Bar Stool.glb', 1.8],
+                ['Furniture Kit-glb/Chair.glb', 1.8], ['Furniture Kit-glb/Chair Rounded.glb', 1.8], ['Furniture Kit-glb/Lounge Chair.glb', 2.0],
+                ['Furniture Kit-glb/Lamp Round Floor.glb', 3.5], ['Ultimate House Interior Pack-glb/Table Lamp.glb', 1.0], ['Furniture Kit-glb/Television.glb', 2.0],
+                ['Furniture Kit-glb/Bookcase Open.glb', 4.0], ['Furniture Kit-glb/Bookcase Closed.glb', 4.5], ['Furniture Kit-glb/Rug Rectangle.glb', 0.15],
+                ['Furniture Kit-glb/Rug Round.glb', 0.15], ['Furniture Kit-glb/Coat Rack Standing.glb', 3.5], ['Furniture Kit-glb/Plant Small.glb', 1.2],
+                ['Furniture Kit-glb/Potted Plant.glb', 1.4], ['Household Props 001-glb/Couch.glb', 2.4], ['Household Props 001-glb/Armchair.glb', 2.0],
+                ['Household Props 001-glb/Rocking Chair.glb', 2.2], ['Household Props 001-glb/Bed.glb', 1.6], ['Household Props 001-glb/Grandfathers Clock.glb', 4.5],
+            ]},
+            { cat: '厨房 / 家电', items: [
+                ['Furniture Kit-glb/Kitchen Fridge.glb', 4.5], ['Furniture Kit-glb/Kitchen Fridge Large.glb', 5.0], ['Ultimate House Interior Pack-glb/Oven.glb', 2.5],
+                ['Furniture Kit-glb/Kitchen Stove.glb', 2.0], ['Furniture Kit-glb/Kitchen Sink.glb', 2.0], ['Furniture Kit-glb/Kitchen Cabinet.glb', 2.5],
+                ['Furniture Kit-glb/Kitchen Cabinet Upper.glb', 2.0], ['Furniture Kit-glb/Kitchen Microwave.glb', 1.0], ['Furniture Kit-glb/Kitchen Coffee Machine.glb', 1.2],
+                ['Furniture Kit-glb/Kitchen Blender.glb', 0.8], ['Furniture Kit-glb/Toaster.glb', 0.6], ['Furniture Kit-glb/Kitchen Bar.glb', 2.5],
+                ['Furniture Kit-glb/Washer.glb', 2.5], ['Furniture Kit-glb/Dryer.glb', 2.5], ['Ultimate Interior Props Pack-glb/Wood Kitchen Table.glb', 1.6],
+                ['Ultimate Interior Props Pack-glb/Gas Stove.glb', 2.0], ['Ultimate Interior Props Pack-glb/Fridge.glb', 4.5], ['Ultimate Interior Props Pack-glb/Oven Solo.glb', 1.2],
+            ]},
+            { cat: '卫浴', items: [
+                ['Furniture Kit-glb/Bathtub.glb', 1.5], ['Furniture Kit-glb/Toilet.glb', 1.4], ['Furniture Kit-glb/Toilet Square.glb', 1.4],
+                ['Furniture Kit-glb/Bathroom Sink.glb', 2.2], ['Bubbly Bathroom Set.undefined-glb/Cabinet Bathroom.glb', 2.6], ['Bubbly Bathroom Set.undefined-glb/Mirror.glb', 1.6],
+                ['Furniture Kit-glb/Bathroom Mirror.glb', 1.6], ['Furniture Kit-glb/Shower Round.glb', 4.0], ['Ultimate House Interior Pack-glb/Towel Rack.glb', 1.5],
+                ['Bubbly Bathroom Set.undefined-glb/Towel Stacked.glb', 0.9], ['Bubbly Bathroom Set.undefined-glb/Mat.glb', 0.08], ['Bubbly Bathroom Set.undefined-glb/Ducky.glb', 0.3],
+                ['Bubbly Bathroom Set.undefined-glb/Plant.glb', 1.2], ['Office Pack-glb/Bathroom Toilet Paper.glb', 0.5],
+            ]},
+            { cat: '办公 / 电脑', items: [
+                ['Office Pack-glb/Desk.glb', 1.8], ['Office Pack-glb/Adjustable Desk.glb', 1.8], ['Office Pack-glb/Office Chair.glb', 2.4],
+                ['Office Pack-glb/Computer.glb', 1.2], ['Office Pack-glb/Computer Screen.glb', 1.1], ['Office Pack-glb/Dual Monitors on sit-stand arm.glb', 1.5],
+                ['Office Pack-glb/Keyboard.glb', 0.15], ['Office Pack-glb/Mouse.glb', 0.1], ['Office Pack-glb/Laptop.glb', 0.4],
+                ['Ultimate Interior Props Pack-glb/Bass Speakers.glb', 1.4], ['Office Pack-glb/Whiteboard.glb', 3.5], ['Office Pack-glb/File Cabinet.glb', 2.5],
+                ['Office Pack-glb/Medium Book Shelf.glb', 4.0], ['Office Pack-glb/Shelf.glb', 1.0], ['Office Pack-glb/Printer.glb', 1.5],
+                ['Office Pack-glb/Water Cooler.glb', 2.5], ['Office Pack-glb/Lamp.glb', 1.0], ['Office Pack-glb/Light Floor.glb', 3.0],
+                ['Office Pack-glb/Dartboard.glb', 1.4], ['Office Pack-glb/Couch Medium.glb', 2.4], ['Office Pack-glb/Rug.glb', 0.15],
+                ['Office Pack-glb/Houseplant.glb', 1.5], ['Office Pack-glb/Trashcan.glb', 1.0], ['Office Pack-glb/Curtains Double.glb', 4.0],
+                ['Office Pack-glb/Rubik\'s cube.glb', 0.2], ['Office Pack-glb/Table tennis table.glb', 1.5], ['Office Pack-glb/Water Cooler.glb', 2.5],
+            ]},
+            { cat: '圣诞装饰', items: [
+                ['ChristmasKit/Pine Tree.glb', 2.5], ['ChristmasKit/Gifts.glb', 1.0], ['ChristmasKit/Santa.glb', 3.0],
+                ['ChristmasKit/Bells.glb', 0.6], ['ChristmasKit/Branch.glb', 0.5], ['ChristmasKit/Christmas Cap.glb', 0.5],
+                ['ChristmasKit/Christmas Cookies.glb', 0.35], ['ChristmasKit/Decoration.glb', 0.7], ['ChristmasKit/Decorations.glb', 0.7],
+                ['ChristmasKit/Socks.glb', 0.6], ['ChristmasKit/Stars.glb', 0.5],
+            ]},
+            { cat: '家居道具', items: [
+                ['Household Props 001-glb/Potted Plant.glb', 1.5], ['Household Props 001-glb/Flowers.glb', 0.8], ['Household Props 001-glb/Fruit Bowl.glb', 0.4],
+                ['Household Props 001-glb/Wine Glass.glb', 0.3], ['Household Props 001-glb/Cup Of Tea.glb', 0.3], ['Household Props 001-glb/Alarm Clock.glb', 0.4],
+                ['Household Props 001-glb/Lamp With Shade.glb', 1.2], ['Household Props 001-glb/Books.glb', 0.3], ['Household Props 001-glb/Globe.glb', 0.6],
+                ['Household Props 001-glb/Painting.glb', 1.5], ['Household Props 001-glb/Trophy.glb', 0.6], ['Household Props 001-glb/Trash Bin.glb', 1.0],
+                ['Household Props 001-glb/Ladder.glb', 3.0], ['Household Props 001-glb/Dumbbell.glb', 0.3], ['Household Props 001-glb/Telescope.glb', 2.0],
+                ['Household Props 001-glb/Headphones.glb', 0.4], ['Household Props 001-glb/Rubber Duck.glb', 0.3],
+            ]},
+            { cat: '其他模型', items: [
+                ['Little Bookcase by Don Carson - 74tXfxoDB9b.glb', 4.2], ['Bar Table by Nick Slough - 5sbtN1v3sac.glb', 3.0],
+                ['Vending Machine.glb', 5.0], ['Piano by Bruno Oliveira - 5vbJ5vildOq.glb', 3.5],
+            ]},
+        ];
+
+        let devModeActive = false;
+        let devGhost = null;       // { holder, cfg }
+        let devSelected = null;    // interactable 条目
+        let devCounter = 0;
+        const devCache = new Map(); // id -> gltf.scene
+
+        function devFile(rel) { return 'versions/assets/' + rel; }
+
+        function buildDevCatalogUI(filter) {
+            const container = document.getElementById('dev-catalog');
+            container.innerHTML = '';
+            const f = (filter || '').toLowerCase();
+            for (const cat of DEV_CATALOG) {
+                const items = cat.items.filter(([file]) => file.toLowerCase().includes(f));
+                if (!items.length) continue;
+                const title = document.createElement('div');
+                title.className = 'dev-cat-title';
+                title.textContent = cat.cat;
+                container.appendChild(title);
+                for (const [file, height] of items) {
+                    const btn = document.createElement('button');
+                    btn.className = 'dev-cat-item';
+                    btn.textContent = file.split('/').pop().replace('.glb', '');
+                    btn.title = file;
+                    btn.addEventListener('click', () => spawnDevGhost({ file: devFile(file), height }));
+                    container.appendChild(btn);
+                }
+            }
+        }
+
+        function setDevMode(on) {
+            devModeActive = on;
+            const btn = document.getElementById('dev-btn');
+            const panel = document.getElementById('dev-panel');
+            const hint = document.getElementById('dev-hint');
+            if (on) {
+                if (currentMode === MODE.FPS) exitFPS();
+                if (moveModeActive) setMoveMode(false);
+                controls.enabled = false;
+                btn.classList.add('active');
+                panel.classList.add('open');
+                hint.classList.add('show');
+                buildDevCatalogUI('');
+            } else {
+                cancelDevGhost();
+                selectDevItem(null);
+                controls.enabled = true;
+                btn.classList.remove('active');
+                panel.classList.remove('open');
+                hint.classList.remove('show');
+                document.getElementById('dev-align-hint').classList.remove('show');
+            }
+        }
+        function toggleDevMode() { setDevMode(!devModeActive); }
+
+        function buildDevHolder(gltfScene, height) {
+            const model = gltfScene.clone(true);
+            const rawSize = new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3());
+            if (rawSize.y <= 0) return null;
+            model.scale.setScalar(height / rawSize.y);
+            model.updateMatrixWorld(true);
+            const box = new THREE.Box3().setFromObject(model);
+            const c = box.getCenter(new THREE.Vector3());
+            const holder = new THREE.Group();
+            holder.add(model);
+            model.position.set(-c.x, -box.min.y, -c.z);
+            model.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+            return holder;
+        }
+
+        function loadDevModel(cfg) {
+            if (devCache.has(cfg.file)) return Promise.resolve(devCache.get(cfg.file));
+            return new Promise((resolve) => {
+                new GLTFLoader().load(encodeURI(cfg.file), (gltf) => {
+                    devCache.set(cfg.file, gltf.scene);
+                    resolve(gltf.scene);
+                }, undefined, () => resolve(null));
+            });
+        }
+
+        function makeGhostTransparent(model) {
+            model.traverse(o => {
+                if (o.isMesh && o.material) {
+                    o.material = o.material.clone();
+                    o.material.transparent = true;
+                    o.material.opacity = 0.45;
+                    o.material.depthWrite = false;
+                }
+            });
+        }
+
+        async function spawnDevGhost(cfg) {
+            cancelDevGhost();
+            const modelScene = await loadDevModel(cfg);
+            if (!modelScene) { showInfo('加载失败', '模型加载失败：' + cfg.file); return; }
+            const holder = buildDevHolder(modelScene, cfg.height);
+            if (!holder) return;
+            makeGhostTransparent(holder);
+            scene.add(holder);
+            devGhost = { holder, cfg };
+            devGhost.holder.position.set(0, 0, 0);
+            document.getElementById('dev-align-hint').classList.add('show');
+        }
+
+        function updateDevGhost(e) {
+            if (!devGhost) return;
+            setPointerFromEvent(e);
+            raycaster.setFromCamera(pointer, camera);
+            const ray = raycaster.ray;
+            const floors = [
+                { y: 0, plane: new THREE.Plane(UP, 0) },
+                { y: FLOOR2_Y, plane: new THREE.Plane(UP, -FLOOR2_Y) },
+            ];
+            const pt = new THREE.Vector3();
+            let best = null;
+            for (const fl of floors) {
+                const hit = ray.intersectPlane(fl.plane, pt);
+                if (!hit) continue;
+                if (hit.x < -21 || hit.x > 21 || hit.z < -13 || hit.z > 13) continue;
+                const d = ray.origin.distanceTo(hit);
+                if (!best || d < best.d) best = { hit: hit.clone(), y: fl.y, d };
+            }
+            if (best) {
+                devGhost.holder.position.set(best.hit.x, best.y, best.hit.z);
+            }
+        }
+
+        function placeDevGhost() {
+            if (!devGhost) return;
+            const { holder, cfg } = devGhost;
+            const id = 'custom-' + (++devCounter);
+            holder.traverse(o => {
+                if (o.isMesh && o.material) {
+                    o.material.transparent = false;
+                    o.material.opacity = 1;
+                    o.material.depthWrite = true;
+                }
+            });
+            registerInteractable(holder, {
+                id, name: cfg.file.split('/').pop().replace('.glb', ''),
+                desc: '开发者模式放置的模型。', activate: () => {},
+                file: cfg.file, height: cfg.height, scale: 1
+            });
+            devGhost = null;
+            refreshColliders();
+            savePositions();
+            document.getElementById('dev-align-hint').classList.remove('show');
+            selectDevItem(interactables[interactables.length - 1]);
+        }
+
+        function cancelDevGhost() {
+            if (!devGhost) return;
+            scene.remove(devGhost.holder);
+            devGhost = null;
+            document.getElementById('dev-align-hint').classList.remove('show');
+        }
+
+        function selectDevItem(entry) {
+            devSelected = entry;
+            updateDevSelectedInfo();
+        }
+
+        function updateDevSelectedInfo() {
+            const nameEl = document.getElementById('dev-sel-name');
+            const inpX = document.getElementById('dev-inp-x');
+            const inpY = document.getElementById('dev-inp-y');
+            const inpZ = document.getElementById('dev-inp-z');
+            const inpRy = document.getElementById('dev-inp-ry');
+            const inpScale = document.getElementById('dev-inp-scale');
+            const has = !!devSelected;
+            [inpX, inpY, inpZ, inpRy, inpScale].forEach(i => i.disabled = !has);
+            if (devSelected) {
+                nameEl.textContent = devSelected.name || devSelected.id;
+                const p = devSelected.group.position;
+                inpX.value = p.x.toFixed(2);
+                inpY.value = p.y.toFixed(2);
+                inpZ.value = p.z.toFixed(2);
+                inpRy.value = Math.round(devSelected.group.rotation.y * 180 / Math.PI);
+                inpScale.value = (devSelected.group.scale ? devSelected.group.scale.x : 1).toFixed(2);
+                if (moveRing) {
+                    const box = new THREE.Box3().setFromObject(devSelected.group);
+                    moveRing.visible = true;
+                    moveRing.position.set(p.x, box.min.y + 0.08, p.z);
+                    moveRing.scale.setScalar(Math.max(0.6, Math.max(box.getSize().x, box.getSize().z) / 2 + 0.25));
+                }
+            } else {
+                nameEl.textContent = '未选中';
+                [inpX, inpY, inpZ, inpRy, inpScale].forEach(i => i.value = '');
+                if (moveRing) moveRing.visible = false;
+            }
+        }
+
+        function applyDevCoords() {
+            if (!devSelected) return;
+            const p = devSelected.group.position;
+            p.x = clamp(parseFloat(document.getElementById('dev-inp-x').value) || 0, -21, 21);
+            p.y = clamp(parseFloat(document.getElementById('dev-inp-y').value) || 0, 0, 29);
+            p.z = clamp(parseFloat(document.getElementById('dev-inp-z').value) || 0, -13, 13);
+            devSelected.group.rotation.y = (parseFloat(document.getElementById('dev-inp-ry').value) || 0) * Math.PI / 180;
+            const s = clamp(parseFloat(document.getElementById('dev-inp-scale').value) || 1, 0.1, 10);
+            devSelected.group.scale.setScalar(s);
+            if (devSelected.scale !== undefined) devSelected.scale = s;
+            checkAlignmentHint(devSelected.group);
+            refreshColliders();
+            savePositions();
+        }
+
+        function checkAlignmentHint(group) {
+            const hint = document.getElementById('dev-align-hint');
+            if (!group) { hint.classList.remove('show'); return; }
+            const box = new THREE.Box3().setFromObject(group);
+            const onGround = Math.abs(box.min.y) < 0.3 || Math.abs(box.min.y - FLOOR2_Y) < 0.3;
+            const nearWall = Math.abs(box.max.z + 14) < 0.3 || Math.abs(box.min.z - 14) < 0.3 ||
+                             Math.abs(box.max.x + 22) < 0.3 || Math.abs(box.min.x - 22) < 0.3;
+            if (onGround || nearWall) {
+                hint.textContent = nearWall && !onGround ? '✓ 已贴墙' : '✓ 已贴地';
+                hint.classList.add('show');
+            } else {
+                hint.classList.remove('show');
+            }
+        }
+
+        function devMoveSelected(dx, dy, dz) {
+            if (!devSelected) return;
+            const p = devSelected.group.position;
+            p.x = clamp(p.x + dx, -21, 21);
+            p.y = clamp(p.y + dy, 0, 29);
+            p.z = clamp(p.z + dz, -13, 13);
+            updateDevSelectedInfo();
+            checkAlignmentHint(devSelected.group);
+            refreshColliders();
+            savePositions();
+        }
+
+        function devRotateSelected(da) {
+            if (!devSelected) return;
+            devSelected.group.rotation.y += da;
+            updateDevSelectedInfo();
+            refreshColliders();
+            savePositions();
+        }
+
+        function devScaleSelected(f) {
+            if (!devSelected) return;
+            const g = devSelected.group;
+            const s = clamp((g.scale ? g.scale.x : 1) * f, 0.1, 10);
+            g.scale.setScalar(s);
+            if (devSelected.scale !== undefined) devSelected.scale = s;
+            updateDevSelectedInfo();
+            refreshColliders();
+            savePositions();
+        }
+
+        function deleteDevSelected() {
+            if (!devSelected) return;
+            const idx = interactables.indexOf(devSelected);
+            if (idx >= 0) interactables.splice(idx, 1);
+            scene.remove(devSelected.group);
+            devSelected = null;
+            updateDevSelectedInfo();
+            refreshColliders();
+            savePositions();
+        }
+
+        function devPick(e) {
+            setPointerFromEvent(e);
+            const entry = pickMoveable();
+            selectDevItem(entry || null);
+        }
+
+        // 导出 / 导入
+        function exportScene() {
+            const items = interactables.map(i => ({
+                id: i.id, name: i.name, file: i.file || null, height: i.height || null,
+                x: i.group.position.x, y: i.group.position.y, z: i.group.position.z,
+                ry: i.group.rotation.y, scale: i.group.scale ? i.group.scale.x : null,
+            }));
+            const blob = new Blob([JSON.stringify({ version: 1, items }, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'christmas_room_scene.json';
+            document.body.appendChild(a); a.click(); a.remove();
+            URL.revokeObjectURL(url);
+            showInfo('已导出', '场景参数已导出为 JSON 文件。');
+        }
+
+        function importSceneFile(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try { applyImportedScene(JSON.parse(ev.target.result)); }
+                catch (err) { showInfo('导入失败', 'JSON 解析失败。'); }
+            };
+            reader.readAsText(file);
+            e.target.value = '';
+        }
+
+        function spawnImportedItem(item) {
+            return loadDevModel({ file: item.file }).then((modelScene) => {
+                if (!modelScene) return;
+                const holder = buildDevHolder(modelScene, item.height || 2);
+                if (!holder) return;
+                holder.position.set(item.x, item.y, item.z);
+                holder.rotation.y = item.ry || 0;
+                if (item.scale != null) holder.scale.setScalar(item.scale);
+                scene.add(holder);
+                registerInteractable(holder, {
+                    id: item.id, name: item.name, desc: '导入的模型。', activate: () => {},
+                    file: item.file, height: item.height, scale: item.scale
+                });
+                if (item.id && item.id.startsWith('custom-')) devCounter = Math.max(devCounter, parseInt(item.id.replace('custom-', '')) || 0);
+            });
+        }
+
+        function applyImportedScene(data) {
+            if (!data || !Array.isArray(data.items)) { showInfo('导入失败', '格式不正确。'); return; }
+            Promise.all(data.items.map(item => {
+                const existing = interactables.find(i => i.id === item.id);
+                if (existing) {
+                    existing.group.position.set(item.x, item.y, item.z);
+                    existing.group.rotation.y = item.ry || 0;
+                    if (item.scale != null && existing.group.scale) existing.group.scale.setScalar(item.scale);
+                    return Promise.resolve();
+                }
+                return item.file ? spawnImportedItem(item) : Promise.resolve();
+            })).then(() => {
+                refreshColliders();
+                savePositions();
+                showInfo('导入成功', '场景已恢复。');
+            });
+        }
+
+        function setupDevEvents() {
+            document.getElementById('dev-btn').addEventListener('click', toggleDevMode);
+            document.getElementById('dev-close').addEventListener('click', () => setDevMode(false));
+            document.getElementById('dev-search').addEventListener('input', (e) => buildDevCatalogUI(e.target.value));
+            document.getElementById('dev-export').addEventListener('click', exportScene);
+            document.getElementById('dev-import').addEventListener('click', () => document.getElementById('dev-import-file').click());
+            document.getElementById('dev-import-file').addEventListener('change', importSceneFile);
+            document.getElementById('dev-delete').addEventListener('click', deleteDevSelected);
+            document.getElementById('dev-scale-down').addEventListener('click', () => devScaleSelected(1 / 1.1));
+            document.getElementById('dev-scale-up').addEventListener('click', () => devScaleSelected(1.1));
+            ['dev-inp-x', 'dev-inp-y', 'dev-inp-z', 'dev-inp-ry', 'dev-inp-scale'].forEach(id => {
+                document.getElementById(id).addEventListener('change', applyDevCoords);
+            });
+            window.addEventListener('keydown', (e) => {
+                if (!devModeActive) return;
+                if (devGhost) {
+                    if (e.code === 'Escape') { cancelDevGhost(); }
+                    return;
+                }
+                const step = e.shiftKey ? 1.0 : 0.1;
+                switch (e.code) {
+                    case 'ArrowLeft': devMoveSelected(-step, 0, 0); break;
+                    case 'ArrowRight': devMoveSelected(step, 0, 0); break;
+                    case 'ArrowDown': devMoveSelected(0, 0, step); break;
+                    case 'ArrowUp': devMoveSelected(0, 0, -step); break;
+                    case 'PageUp': devMoveSelected(0, step, 0); break;
+                    case 'PageDown': devMoveSelected(0, -step, 0); break;
+                    case 'KeyQ': devRotateSelected(Math.PI / 12); break;
+                    case 'KeyE': devRotateSelected(-Math.PI / 12); break;
+                    case 'Delete': case 'Backspace': deleteDevSelected(); break;
+                    case 'Escape': selectDevItem(null); break;
+                    default: return;
+                }
+                e.preventDefault();
             });
         }
 
@@ -2128,22 +2830,49 @@
 
         // ---------- First-person mode ----------
         function refreshColliders() {
-            activeColliders = [];
+            activeColliders = staticColliders.slice();
             for (const i of interactables) {
                 if (!SOLID_IDS.includes(i.id)) continue;
                 const box = new THREE.Box3().setFromObject(i.group);
                 if (box.isEmpty()) continue;
-                activeColliders.push({ minX: box.min.x, maxX: box.max.x, minZ: box.min.z, maxZ: box.max.z });
+                activeColliders.push({
+                    minX: box.min.x, maxX: box.max.x,
+                    minY: box.min.y, maxY: box.max.y,
+                    minZ: box.min.z, maxZ: box.max.z,
+                });
             }
         }
 
-        function collidesPoint(x, z) {
-            if (x < -21.3 || x > 21.3 || z < -13.3 || z > 13.3) return true;
+        function collidesAt(x, feetY, z) {
+            if (x < -21.5 || x > 21.5 || z < -13.5 || z > 13.5) return true;
+            const top = feetY + PLAYER.height;
+            const r = PLAYER.radius;
             for (const c of activeColliders) {
-                if (x > c.minX - PLAYER.radius && x < c.maxX + PLAYER.radius &&
-                    z > c.minZ - PLAYER.radius && z < c.maxZ + PLAYER.radius) return true;
+                if (feetY > c.maxY || top < c.minY) continue;
+                if (x + r > c.minX && x - r < c.maxX && z + r > c.minZ && z - r < c.maxZ) return true;
             }
             return false;
+        }
+
+        function stairHeightAt(z) {
+            if (z >= STAIRS.zBottom - 0.001) return 0;
+            if (z <= STAIRS.zTop) return FLOOR2_Y;
+            const run = (STAIRS.zBottom - STAIRS.zTop) / STAIRS.steps;
+            let i = Math.floor((STAIRS.zBottom - z) / run);
+            i = Math.max(0, Math.min(STAIRS.steps - 1, i));
+            return (i + 1) * STAIRS.rise;
+        }
+
+        function floorHeightAt(x, z, currentFeetY) {
+            // 楼梯（离散台阶，带容差防止瞬移）
+            if (x > STAIRS.minX && x < STAIRS.maxX && z > STAIRS.zTop && z < STAIRS.zBottom) {
+                const h = stairHeightAt(z);
+                if (Math.abs(currentFeetY - h) < 1.6) return h;
+                return currentFeetY; // 楼梯下方/上方，保持当前高度
+            }
+            // 二层
+            if (currentFeetY > 8) return FLOOR2_Y;
+            return 0;
         }
 
         function getInteractableAtCenter() {
@@ -2163,8 +2892,10 @@
 
         function enterFPS() {
             if (moveModeActive) setMoveMode(false);
+            if (devModeActive) setDevMode(false);
             currentMode = MODE.FPS;
             controls.enabled = false;
+            playerFeetY = 0;
             camera.position.set(0, PLAYER.height, 12);
             camera.lookAt(0, PLAYER.height, -10);
             if (fpsHands) fpsHands.visible = true;
@@ -2268,14 +2999,18 @@
             const speed = 5.0;
             const nx = camera.position.x + dir.x * speed * dt;
             const nz = camera.position.z + dir.z * speed * dt;
-            if (!collidesPoint(nx, camera.position.z)) camera.position.x = nx;
-            if (!collidesPoint(camera.position.x, nz)) camera.position.z = nz;
+            if (!collidesAt(nx, playerFeetY, camera.position.z)) camera.position.x = nx;
+            if (!collidesAt(camera.position.x, playerFeetY, nz)) camera.position.z = nz;
+
+            // 楼梯 / 楼层高度（平滑过渡）
+            const targetY = floorHeightAt(camera.position.x, camera.position.z, playerFeetY);
+            playerFeetY += (targetY - playerFeetY) * Math.min(1, dt * 14);
 
             // 行走动态：镜头上下晃动 + 手臂摆动
             walkAmount += ((moving ? 1 : 0) - walkAmount) * Math.min(1, dt * 6);
             if (moving) walkPhase += dt * 9.0;
             const bobY = Math.sin(walkPhase * 2) * 0.055 * walkAmount;
-            camera.position.y = PLAYER.height + bobY;
+            camera.position.y = playerFeetY + PLAYER.height + bobY;
             updateFPSHands(dt, walkPhase, walkAmount);
 
             const target = getInteractableAtCenter();
@@ -2338,11 +3073,11 @@
             scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 
             controls = new OrbitControls(camera, renderer.domElement);
-            controls.target.set(0, 6, 0);
+            controls.target.set(0, 9, 0);
             controls.enableDamping = true;
             controls.dampingFactor = 0.08;
-            controls.minDistance = 12;
-            controls.maxDistance = 42;
+            controls.minDistance = 14;
+            controls.maxDistance = 60;
             controls.maxPolarAngle = Math.PI * 0.52;
             controls.minPolarAngle = Math.PI * 0.12;
             controls.update();
@@ -2358,6 +3093,7 @@
             setupLights();
 
             scene.add(buildRoom());
+            scene.add(buildSecondFloor());
             scene.add(buildTree());
             scene.add(buildRadio());
             scene.add(buildRug());
@@ -2367,7 +3103,7 @@
             scene.add(buildBookshelf());
             scene.add(buildTV());
             // scene.add(buildAlbum());
-            scene.add(buildClock());
+            // scene.add(buildClock()); // 已替换为 GLB 时钟模型
             scene.add(buildStockings());
             scene.add(buildSofa());
             scene.add(buildFrames());
@@ -2383,6 +3119,7 @@
             scene.add(moveRing);
 
             setupEvents();
+            setupDevEvents();
             setupLightingUI();
 
             applySavedPositions();
